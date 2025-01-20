@@ -1,8 +1,5 @@
 package br.com.erudio.controllers
 
-import br.com.erudio.converters.NumberConverter
-import br.com.erudio.exceptions.UnsupportedMathOperationException
-import br.com.erudio.math.SimpleMath
 import br.com.erudio.model.Person
 import br.com.erudio.services.PersonService
 import org.springframework.beans.factory.annotation.Autowired
