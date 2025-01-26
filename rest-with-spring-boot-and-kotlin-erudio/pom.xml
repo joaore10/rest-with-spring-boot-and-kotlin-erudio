@@ -29,7 +29,7 @@
 	<properties>
 		<java.version>18</java.version>
 		<kotlin.version>1.9.25</kotlin.version>
-		<dozer.version>6.5.2</dozer.version>
+		<dozer-version>6.5.2</dozer-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,7 +58,19 @@
 		<dependency>
 			<groupId>com.github.dozermapper</groupId>
 			<artifactId>dozer-core</artifactId>
-			<version>${dozer.version}</version>
+			<version>${dozer-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.2</version>
 		</dependency>
 
 		<dependency>
