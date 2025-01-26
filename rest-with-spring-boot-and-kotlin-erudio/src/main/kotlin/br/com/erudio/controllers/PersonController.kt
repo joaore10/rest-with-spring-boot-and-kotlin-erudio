@@ -21,7 +21,6 @@ class PersonController {
     @Autowired
     private lateinit var service: PersonService
 
-    /*
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<PersonVO> {
         return service.findAll()
@@ -48,6 +47,6 @@ class PersonController {
         service.delete(id)
         return ResponseEntity.noContent().build<Any>()
     }
-*/
+
 
 }
