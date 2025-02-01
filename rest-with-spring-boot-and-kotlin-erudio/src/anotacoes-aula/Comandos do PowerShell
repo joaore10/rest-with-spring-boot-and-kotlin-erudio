@@ -1,0 +1,6 @@
+
+>>>>>>>>>>>>> Para iniciar o projeto via command line e subir as migrations <<<<<<<<<<<<<<<<<
+1 - Acessar o diretorio do projeto via powershell
+2 - Executar: mvn clean package spring-boot:run -DskipTests
+
+**Obs: Existe plugin do maven para subir migrations tambem, vale a pena ver depois.
