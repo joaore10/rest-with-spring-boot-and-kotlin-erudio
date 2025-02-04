@@ -2,8 +2,8 @@ package br.com.erudio.controllers
 
 import br.com.erudio.data.vo.v1.PersonVO
 import br.com.erudio.services.PersonService
+import br.com.erudio.util.MediaType
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,28 +21,28 @@ class PersonController {
     @Autowired
     private lateinit var service: PersonService
 
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
+    @GetMapping(produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     fun findAll(): List<PersonVO> {
         return service.findAll()
     }
 
-    @GetMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
+    @GetMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     fun findById(@PathVariable(value = "id") id: Long
     ): PersonVO {
         return service.findById(id)
     }
 
-    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
+    @PostMapping(produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML], consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     fun create(@RequestBody PersonVO: PersonVO): PersonVO {
         return service.create(PersonVO)
     }
 
-    @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
+    @PutMapping(produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML], consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     fun update(@RequestBody PersonVO: PersonVO): PersonVO {
         return service.update(PersonVO)
     }
 
-    @DeleteMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
+    @DeleteMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     fun delete(@PathVariable(value = "id") id: Long) : ResponseEntity<*> {
         service.delete(id)
         return ResponseEntity.noContent().build<Any>()
