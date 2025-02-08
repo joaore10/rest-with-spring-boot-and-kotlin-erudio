@@ -1,6 +1,7 @@
 package br.com.erudio.config
 
 import br.com.erudio.serilization.converter.YamlJackson2HttpMessageConverter
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -8,6 +9,7 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
 
 @Configuration
 class WebConfig : WebMvcConfigurer {
