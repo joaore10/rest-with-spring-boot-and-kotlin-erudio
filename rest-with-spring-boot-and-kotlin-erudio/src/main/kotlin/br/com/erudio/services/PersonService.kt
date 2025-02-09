@@ -1,11 +1,13 @@
 package br.com.erudio.services
 
+import br.com.erudio.controllers.PersonController
 import br.com.erudio.data.vo.v1.PersonVO
 import br.com.erudio.exceptions.ResourceNotFoundException
 import br.com.erudio.mapper.DozerMapper
 import br.com.erudio.model.Person
 import br.com.erudio.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Service
 import java.util.logging.Logger
 
@@ -24,11 +26,14 @@ class PersonService {
     }
 
     fun findById(id: Long): PersonVO {
-        logger.info("Procurando uma pessoa!")
+        logger.info("Procurando uma pessoa com ID $id!")
 
         var person =  repository.findById(id)
             .orElseThrow { ResourceNotFoundException("Não há registro para esse ID!")}
-        return DozerMapper.parseObject(person, PersonVO::class.java)
+        val personVO: PersonVO = DozerMapper.parseObject(person, PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        personVO.add(withSelfRel)
+        return personVO
     }
 
     fun create(person:PersonVO) : PersonVO{
@@ -38,8 +43,8 @@ class PersonService {
     }
 
     fun update(person:PersonVO) : PersonVO{
-        logger.info("Alterando a pessoa do id ${person.id}")
-        val entity = repository.findById(person.id)
+        logger.info("Alterando a pessoa do id ${person.key}")
+        val entity = repository.findById(person.key)
             .orElseThrow { ResourceNotFoundException("Não há registro para esse ID!")}
 
         entity.firstName = person.firstName
