@@ -59,13 +59,54 @@ internal class PersonServiceTest {
 
     @Test
     fun create() {
+        val entity = inputObject.mockEntity(1)
+
+        val persisted = entity.copy()
+        persisted.id = 1
+
+        `when`(repository.save(entity)).thenReturn(persisted)
+
+        val vo = inputObject.mockVO(1)
+        val result = service.create(vo)
+
+        assertNotNull(result)
+        assertNotNull(result.key)
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertEquals("Endereço Test1",result.address)
+        assertEquals("Primeiro Nome Test1",result.firstName)
+        assertEquals("Sobrenome Test1",result.lastName)
+        assertEquals("Femea",result.genero)
     }
 
     @Test
     fun update() {
+        val entity = inputObject.mockEntity(1)
+
+        val persisted = entity.copy()
+        persisted.id = 1
+
+        `when`(repository.findById(1)).thenReturn(Optional.of(entity))
+        `when`(repository.save(entity)).thenReturn(persisted)
+
+        val vo = inputObject.mockVO(1)
+        val result = service.update(vo)
+
+        assertNotNull(result)
+        assertNotNull(result.key)
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertEquals("Endereço Test1",result.address)
+        assertEquals("Primeiro Nome Test1",result.firstName)
+        assertEquals("Sobrenome Test1",result.lastName)
+        assertEquals("Femea",result.genero)
     }
 
     @Test
     fun delete() {
+        val entity = inputObject.mockEntity(1)
+
+        `when`(repository.findById(1)).thenReturn(Optional.of(entity))
+        service.delete(1)
     }
 }
