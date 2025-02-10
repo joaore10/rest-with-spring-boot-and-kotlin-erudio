@@ -1,5 +1,6 @@
 package br.com.erudio.mockito.services
 
+import br.com.erudio.exceptions.RequiredObjectsIsNullException
 import br.com.erudio.repository.PersonRepository
 import br.com.erudio.services.PersonService
 import br.com.erudio.unittests.mapper.mocks.MockPerson
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -80,6 +82,18 @@ internal class PersonServiceTest {
     }
 
     @Test
+    fun createWithNullPerson() {
+        val exception: Exception = assertThrows(
+            RequiredObjectsIsNullException::class.java
+        ) { service.create(null) }
+
+        val expectedMessage = "Não é permitido persistir um objeto nulo"
+        val actualMessage = exception.message
+
+        assertTrue(actualMessage!!.contains(expectedMessage))
+    }
+
+    @Test
     fun update() {
         val entity = inputObject.mockEntity(1)
 
@@ -100,6 +114,18 @@ internal class PersonServiceTest {
         assertEquals("Primeiro Nome Test1",result.firstName)
         assertEquals("Sobrenome Test1",result.lastName)
         assertEquals("Femea",result.genero)
+    }
+
+    @Test
+    fun updateWithNullPerson() {
+        val exception: Exception = assertThrows(
+            RequiredObjectsIsNullException::class.java
+        ) { service.update(null) }
+
+        val expectedMessage = "Não é permitido persistir um objeto nulo"
+        val actualMessage = exception.message
+
+        assertTrue(actualMessage!!.contains(expectedMessage))
     }
 
     @Test
