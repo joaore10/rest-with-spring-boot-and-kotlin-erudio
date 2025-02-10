@@ -87,10 +87,11 @@ internal class PersonServiceTest {
             RequiredObjectsIsNullException::class.java
         ) { service.create(null) }
 
-        val expectedMessage = "Não é permitido persistir um objeto nulo"
+        val expectedMessage = "Não é permitido persistir um objeto nulo!"
         val actualMessage = exception.message
 
         assertTrue(actualMessage!!.contains(expectedMessage))
+
     }
 
     @Test
@@ -122,7 +123,7 @@ internal class PersonServiceTest {
             RequiredObjectsIsNullException::class.java
         ) { service.update(null) }
 
-        val expectedMessage = "Não é permitido persistir um objeto nulo"
+        val expectedMessage = "Não é permitido persistir um objeto nulo!"
         val actualMessage = exception.message
 
         assertTrue(actualMessage!!.contains(expectedMessage))

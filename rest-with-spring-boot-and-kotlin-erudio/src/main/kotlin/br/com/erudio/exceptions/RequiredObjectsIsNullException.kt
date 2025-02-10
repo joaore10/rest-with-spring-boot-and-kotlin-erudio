@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 class RequiredObjectsIsNullException: RuntimeException {
-    constructor(): super("Não é permitido persistir um objeto nulo")
+    constructor(): super("Não é permitido persistir um objeto nulo!")
     constructor(exception: String?): super(exception)
 }
