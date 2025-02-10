@@ -39,6 +39,46 @@ internal class PersonServiceTest {
 
     @Test
     fun findAll() {
+        val list = inputObject.mockEntityList()
+        `when`(repository.findAll()).thenReturn(list)
+
+        val persons = service.findAll()
+
+        assertNotNull(persons)
+        assertEquals(14,persons.size)
+
+        val personOne = persons[1]
+
+        assertNotNull(personOne)
+        assertNotNull(personOne.key)
+        assertNotNull(personOne.links)
+        assertTrue(personOne.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertEquals("Endereço Test1",personOne.address)
+        assertEquals("Primeiro Nome Test1",personOne.firstName)
+        assertEquals("Sobrenome Test1",personOne.lastName)
+        assertEquals("Femea",personOne.genero)
+
+        val personFour = persons[4]
+
+        assertNotNull(personFour)
+        assertNotNull(personFour.key)
+        assertNotNull(personFour.links)
+        assertTrue(personFour.links.toString().contains("</api/person/v1/4>;rel=\"self\""))
+        assertEquals("Endereço Test4",personFour.address)
+        assertEquals("Primeiro Nome Test4",personFour.firstName)
+        assertEquals("Sobrenome Test4",personFour.lastName)
+        assertEquals("Macho",personFour.genero)
+
+        val personSeven = persons[7]
+
+        assertNotNull(personSeven)
+        assertNotNull(personSeven.key)
+        assertNotNull(personSeven.links)
+        assertTrue(personSeven.links.toString().contains("</api/person/v1/7>;rel=\"self\""))
+        assertEquals("Endereço Test7",personSeven.address)
+        assertEquals("Primeiro Nome Test7",personSeven.firstName)
+        assertEquals("Sobrenome Test7",personSeven.lastName)
+        assertEquals("Femea",personSeven.genero)
     }
 
     @Test
