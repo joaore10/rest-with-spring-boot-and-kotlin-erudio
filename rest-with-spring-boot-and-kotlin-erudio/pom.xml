@@ -30,6 +30,7 @@
 		<java.version>18</java.version>
 		<kotlin.version>1.9.25</kotlin.version>
 		<dozer.version>6.5.2</dozer.version>
+		<springdoc.version>2.0.2</springdoc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -120,6 +121,12 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 	</dependencies>
