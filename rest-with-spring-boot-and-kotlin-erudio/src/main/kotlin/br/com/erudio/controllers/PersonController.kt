@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,6 +54,7 @@ class PersonController {
         return service.findAll()
     }
 
+    @CrossOrigin(origins = ["http://localhost:8080"])
     @GetMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     @Operation(summary = "Finds a People", description = "Finds a Peoples", tags = ["People"], responses = [
         ApiResponse(description = "Success", responseCode = "200", content = [
@@ -79,6 +81,7 @@ class PersonController {
         return service.findById(id)
     }
 
+    @CrossOrigin(origins = ["http://localhost:8080", "https://erudio.com.br"])
     @PostMapping(produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML], consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
     @Operation(summary = "Adds a New People", description = "Adds a New People", tags = ["People"], responses = [
         ApiResponse(description = "Success", responseCode = "200", content = [
