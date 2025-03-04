@@ -1,7 +1,8 @@
-package br.com.erudio.unittests.mapper.mocks
+package br.com.erudio.unittests.mocks
 
 import br.com.erudio.data.vo.v1.BookVO
 import br.com.erudio.model.Book
+import kotlin.collections.ArrayList
 
 
 class MockBooks {
@@ -17,7 +18,6 @@ class MockBooks {
     fun mockEntity(number: Int): Book {
         val entity = Book()
         entity.author = "Autor Teste $number"
-        entity.launchDate = "2017-11-07 15:09:01.674000"
         entity.price = if (number % 2 == 0) 20.00 else 30.00
         entity.id = number.toLong()
         entity.title = "Titulo Teste $number"
@@ -28,7 +28,6 @@ class MockBooks {
     fun mockVO(number: Int): BookVO {
         val vo = BookVO()
         vo.author = "Autor Teste $number"
-        vo.launchDate = "2017-11-07 15:09:01.674000"
         vo.price = if (number % 2 == 0) 20.00 else 30.00
         vo.key = number.toLong()
         vo.title = "Titulo Teste $number"

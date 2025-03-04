@@ -1,6 +1,7 @@
 package br.com.erudio.model
 
 import jakarta.persistence.*
+import java.util.Date
 
 @Entity
 @Table(name = "books")
@@ -13,8 +14,8 @@ data class Book (
     @Column(nullable = false, length = 200)
     var author:String = "",
 
-    @Column(name = "launch_date", nullable = false, length = 80)
-    var launchDate: String = "",
+    @Column(name = "launch_date")
+    var launchDate: Date? = null,
 
     @Column(nullable = false)
     var price: Double = 0.00,

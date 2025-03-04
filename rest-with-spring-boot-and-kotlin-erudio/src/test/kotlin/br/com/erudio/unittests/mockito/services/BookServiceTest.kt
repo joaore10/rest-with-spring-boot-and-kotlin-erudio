@@ -1,10 +1,9 @@
-package br.com.erudio.mockito.services
+package br.com.erudio.unittests.mockito.services
 
 import br.com.erudio.exceptions.RequiredObjectsIsNullException
 import br.com.erudio.repository.BookRepository
 import br.com.erudio.services.BookService
-import br.com.erudio.unittests.mapper.mocks.MockBooks
-import br.com.erudio.unittests.mapper.mocks.MockPerson
+import br.com.erudio.unittests.mocks.MockBooks
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -47,10 +46,9 @@ internal class BookServiceTest {
 
         assertNotNull(bookOne)
         assertNotNull(bookOne.key)
-//        assertNotNull(personOne.links)
-//        assertTrue(personOne.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertNotNull(bookOne.links)
+        assertTrue(bookOne.links.toString().contains("</api/books/v1/1>;rel=\"self\""))
         assertEquals("Autor Teste 1",bookOne.author)
-        assertEquals("2017-11-07 15:09:01.674000",bookOne.launchDate)
         assertEquals(30.00,bookOne.price)
         assertEquals("Titulo Teste 1",bookOne.title)
 
@@ -58,10 +56,9 @@ internal class BookServiceTest {
 
         assertNotNull(bookFour)
         assertNotNull(bookFour.key)
-//        assertNotNull(personFour.links)
-//        assertTrue(personFour.links.toString().contains("</api/person/v1/4>;rel=\"self\""))
+        assertNotNull(bookFour.links)
+        assertTrue(bookFour.links.toString().contains("</api/books/v1/4>;rel=\"self\""))
         assertEquals("Autor Teste 4",bookFour.author)
-        assertEquals("2017-11-07 15:09:01.674000",bookFour.launchDate)
         assertEquals(20.00,bookFour.price)
         assertEquals("Titulo Teste 4",bookFour.title)
 
@@ -69,10 +66,9 @@ internal class BookServiceTest {
 
         assertNotNull(bookSeven)
         assertNotNull(bookSeven.key)
-//        assertNotNull(bookSeven.links)
-//        assertTrue(bookSeven.links.toString().contains("</api/person/v1/7>;rel=\"self\""))
+        assertNotNull(bookSeven.links)
+        assertTrue(bookSeven.links.toString().contains("</api/books/v1/7>;rel=\"self\""))
         assertEquals("Autor Teste 7",bookSeven.author)
-        assertEquals("2017-11-07 15:09:01.674000",bookSeven.launchDate)
         assertEquals(30.00,bookSeven.price)
         assertEquals("Titulo Teste 7",bookSeven.title)
     }
@@ -87,10 +83,9 @@ internal class BookServiceTest {
 
         assertNotNull(result)
         assertNotNull(result.key)
-//        assertNotNull(result.links)
-//        assertTrue(result.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</api/books/v1/1>;rel=\"self\""))
         assertEquals("Autor Teste 1",result.author)
-        assertEquals("2017-11-07 15:09:01.674000",result.launchDate)
         assertEquals(30.00,result.price)
         assertEquals("Titulo Teste 1",result.title)
     }
@@ -109,10 +104,9 @@ internal class BookServiceTest {
 
         assertNotNull(result)
         assertNotNull(result.key)
-//        assertNotNull(result.links)
-//        assertTrue(result.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</api/books/v1/1>;rel=\"self\""))
         assertEquals("Autor Teste 1",result.author)
-        assertEquals("2017-11-07 15:09:01.674000",result.launchDate)
         assertEquals(30.00,result.price)
         assertEquals("Titulo Teste 1",result.title)
     }
@@ -145,10 +139,9 @@ internal class BookServiceTest {
 
         assertNotNull(result)
         assertNotNull(result.key)
-//        assertNotNull(result.links)
-//        assertTrue(result.links.toString().contains("</api/person/v1/1>;rel=\"self\""))
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</api/books/v1/1>;rel=\"self\""))
         assertEquals("Autor Teste 1",result.author)
-        assertEquals("2017-11-07 15:09:01.674000",result.launchDate)
         assertEquals(30.00,result.price)
         assertEquals("Titulo Teste 1",result.title)
     }
