@@ -3,6 +3,8 @@ package br.com.erudio.integrationtests.controller.cors.withjson
 import br.com.erudio.integrationtests.vo.PersonVO
 import br.com.erudio.integrationtests.ConfigTest
 import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest
+import br.com.erudio.integrationtests.vo.AccountCredentialsVO
+import br.com.erudio.integrationtests.vo.TokenVO
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.restassured.RestAssured.given
@@ -32,11 +34,37 @@ class PersonControllerCorsWithJson() : AbstractIntegrationTest() {
 	private lateinit var objectMapper: ObjectMapper
 	private lateinit var person: PersonVO
 
+	private lateinit var token: String
+
 	@BeforeAll
 	fun setupTests(){
 		objectMapper = ObjectMapper()
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 		person = PersonVO()
+		token = ""
+	}
+
+	@Test
+	@Order(0)
+	fun authorization(){
+		val user = AccountCredentialsVO(
+			username = "leandro",
+			password = "admin123"
+		)
+
+		token = given()
+			.basePath("/auth/signin")
+			.port(ConfigTest.SERVER_PORT)
+				.contentType(ConfigTest.CONTENT_TYPE_JSON)
+				.body(user)
+			.`when`()
+				.post()
+					.then()
+				.statusCode(200)
+					.extract()
+					.body()
+				.`as`(TokenVO::class.java)
+					.accessToken!!
 	}
 
     @Test
@@ -49,6 +77,7 @@ class PersonControllerCorsWithJson() : AbstractIntegrationTest() {
 				ConfigTest.HEADER_PARAM_ORIGIN,
 				ConfigTest.ORIGIN_ERUDIO
 			)
+			.addHeader(ConfigTest.HEADER_PARAM_AUTHORIZATION, "Bearer $token")
 				.setBasePath("/api/person/v1")
 				.setPort(ConfigTest.SERVER_PORT)
 				.addFilter(RequestLoggingFilter(LogDetail.ALL))
@@ -99,6 +128,7 @@ class PersonControllerCorsWithJson() : AbstractIntegrationTest() {
 				ConfigTest.HEADER_PARAM_ORIGIN,
 				ConfigTest.ORIGIN_SEMERU
 			)
+			.addHeader(ConfigTest.HEADER_PARAM_AUTHORIZATION, "Bearer $token")
 			.setBasePath("/api/person/v1")
 			.setPort(ConfigTest.SERVER_PORT)
 			.addFilter(RequestLoggingFilter(LogDetail.ALL))
@@ -132,6 +162,7 @@ class PersonControllerCorsWithJson() : AbstractIntegrationTest() {
 				ConfigTest.HEADER_PARAM_ORIGIN,
 				ConfigTest.ORIGIN_LOCALHOST
 			)
+			.addHeader(ConfigTest.HEADER_PARAM_AUTHORIZATION, "Bearer $token")
 			.setBasePath("/api/person/v1")
 			.setPort(ConfigTest.SERVER_PORT)
 			.addFilter(RequestLoggingFilter(LogDetail.ALL))
@@ -180,6 +211,7 @@ class PersonControllerCorsWithJson() : AbstractIntegrationTest() {
 				ConfigTest.HEADER_PARAM_ORIGIN,
 				ConfigTest.ORIGIN_SEMERU
 			)
+			.addHeader(ConfigTest.HEADER_PARAM_AUTHORIZATION, "Bearer $token")
 			.setBasePath("/api/person/v1")
 			.setPort(ConfigTest.SERVER_PORT)
 			.addFilter(RequestLoggingFilter(LogDetail.ALL))
