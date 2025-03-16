@@ -83,19 +83,163 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
             .body()
             .asString()
 
-        val createdPerson = objectMapper.readValue(content, PersonVO::class.java)
+        val item = objectMapper.readValue(content, PersonVO::class.java)
+        person = item
 
-        assertNotNull(createdPerson.id)
-        assertTrue(createdPerson.id > 0)
-        assertNotNull(createdPerson.firstName)
-        assertNotNull(createdPerson.lastName)
-        assertNotNull(createdPerson.address)
-        assertNotNull(createdPerson.genero)
+        assertNotNull(item.id)
+        assertTrue(item.id > 0)
+        assertNotNull(item.firstName)
+        assertNotNull(item.lastName)
+        assertNotNull(item.address)
+        assertNotNull(item.genero)
 
-        assertEquals("Richard",createdPerson.firstName)
-        assertEquals("Stallman",createdPerson.lastName)
-        assertEquals("New York City, New York - USA",createdPerson.address)
-        assertEquals("Macho",createdPerson.genero)
+        assertEquals("Richard",item.firstName)
+        assertEquals("Stallman",item.lastName)
+        assertEquals("New York City, New York - USA",item.address)
+        assertEquals("Macho",item.genero)
+    }
+
+    @Test
+    @Order(2)
+    fun testUpdate(){
+        person.lastName = "Matthew Stallman"
+
+        val content = given()
+            .spec(specification)
+            .contentType(ConfigTest.CONTENT_TYPE_JSON)
+            .body(person)
+            .`when`()
+            .put()
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString()
+
+        val item = objectMapper.readValue(content, PersonVO::class.java)
+        person = item
+
+        assertNotNull(item.id)
+        assertNotNull(item.firstName)
+        assertNotNull(item.lastName)
+        assertNotNull(item.address)
+        assertNotNull(item.genero)
+
+        assertEquals(person.id, item.id)
+        assertEquals("Richard",item.firstName)
+        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("New York City, New York - USA",item.address)
+        assertEquals("Macho",item.genero)
+    }
+
+    @Test
+    @Order(3)
+    fun testFindById(){
+
+        val content = given()
+            .spec(specification)
+            .contentType(ConfigTest.CONTENT_TYPE_JSON)
+            .pathParams("id", person.id)
+            .`when`()
+            .get("{id}")
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString()
+
+        val item = objectMapper.readValue(content, PersonVO::class.java)
+        person = item
+
+        assertNotNull(item.id)
+        assertNotNull(item.firstName)
+        assertNotNull(item.lastName)
+        assertNotNull(item.address)
+        assertNotNull(item.genero)
+
+        assertEquals(person.id, item.id)
+        assertEquals("Richard",item.firstName)
+        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("New York City, New York - USA",item.address)
+        assertEquals("Macho",item.genero)
+    }
+
+    @Test
+    @Order(4)
+    fun testDelete(){
+        given()
+            .spec(specification)
+            .pathParams("id", person.id)
+            .`when`()
+            .delete("{id}")
+            .then()
+            .statusCode(204)
+    }
+
+    @Test
+    @Order(5)
+    fun testFindAll(){
+
+        val content = given()
+            .spec(specification)
+            .contentType(ConfigTest.CONTENT_TYPE_JSON)
+            .`when`()
+            .get()
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString()
+
+        val people = objectMapper.readValue(content, Array<PersonVO>::class.java)
+
+        val item1 = people[0]
+        assertNotNull(item1.id)
+        assertNotNull(item1.firstName)
+        assertNotNull(item1.lastName)
+        assertNotNull(item1.address)
+        assertNotNull(item1.genero)
+
+        assertEquals("Ariane",item1.firstName)
+        assertEquals("Gachett",item1.lastName)
+        assertEquals("Campinas 22",item1.address)
+        assertEquals("Female",item1.genero)
+
+        val item2 = people[5]
+        assertNotNull(item2.id)
+        assertNotNull(item2.firstName)
+        assertNotNull(item2.lastName)
+        assertNotNull(item2.address)
+        assertNotNull(item2.genero)
+
+        assertEquals("Osmair Ré",item2.firstName)
+        assertEquals("Junior",item2.lastName)
+        assertEquals("Brasil - Campinas",item2.address)
+        assertEquals("Macho",item2.genero)
+    }
+
+    @Test
+    @Order(6)
+    fun testFindAllWithoutToken(){
+
+        val specificationWithoutToken: RequestSpecification = RequestSpecBuilder()
+            .setBasePath("/api/person/v1")
+            .setPort(ConfigTest.SERVER_PORT)
+                .addFilter(RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(ResponseLoggingFilter(LogDetail.ALL))
+            .build()
+
+        given()
+            .spec(specificationWithoutToken)
+            .contentType(ConfigTest.CONTENT_TYPE_JSON)
+            .`when`()
+            .get()
+            .then()
+            .statusCode(403)
+            .extract()
+            .body()
+            .asString()
+
     }
 
     private fun mockPerson() {
