@@ -1,6 +1,6 @@
 package br.com.erudio.config
 
-import br.com.erudio.security.jwt.JwtConfigurer
+import br.com.erudio.security.jwt.JwtTokenFilter
 import br.com.erudio.security.jwt.JwtTokenProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -9,13 +9,16 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @EnableWebSecurity
 @Configuration
@@ -26,10 +29,10 @@ class SecurityConfig {
 
     @Bean
     fun passwordEnconder(): PasswordEncoder {
-        val enconders: MutableMap<String, PasswordEncoder> = HashMap<String, PasswordEncoder>()
+        val encoders: MutableMap<String, PasswordEncoder> = HashMap<String, PasswordEncoder>()
         val pbkdf2Encoder = Pbkdf2PasswordEncoder("",8,185000,Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256)
-        enconders["pbkdf2"] = pbkdf2Encoder
-        val passwordEncoder = DelegatingPasswordEncoder("pbkdf2", enconders)
+        encoders["pbkdf2"] = pbkdf2Encoder
+        val passwordEncoder = DelegatingPasswordEncoder("pbkdf2", encoders)
         passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder)
         return passwordEncoder
     }
@@ -41,9 +44,12 @@ class SecurityConfig {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity) : SecurityFilterChain {
+        val customFilter = JwtTokenFilter(tokenProvider)
+
         return http
-            .httpBasic().disable()
-            .csrf {obj: CsrfConfigurer<HttpSecurity> -> obj.disable()}
+            .httpBasic{ basic: HttpBasicConfigurer<HttpSecurity> -> basic.disable()}
+            .csrf {csrf: CsrfConfigurer<HttpSecurity> -> csrf.disable()}
+            .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
             .sessionManagement{
                 session: SessionManagementConfigurer<HttpSecurity?> ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -60,10 +66,7 @@ class SecurityConfig {
                     .requestMatchers("/api/**").authenticated()
                     .requestMatchers("/users").denyAll()
             }
-            .cors()
-            .and()
-            .apply(JwtConfigurer(tokenProvider))
-            .and()
+            .cors{ _: CorsConfigurer<HttpSecurity?>? ->  }
             .build()
     }
 }
