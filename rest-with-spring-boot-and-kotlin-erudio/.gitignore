@@ -62,6 +62,7 @@ build/
 .mtj.tmp/
 
 #Gradle temporary files
+Collections
 target/
 .mvn/
 .gradle
