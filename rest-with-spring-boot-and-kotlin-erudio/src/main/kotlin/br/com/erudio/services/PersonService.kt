@@ -10,6 +10,7 @@ import br.com.erudio.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.logging.Logger
 
 @Service
@@ -65,6 +66,19 @@ class PersonService {
         entity.address = person.address
 
         val personVO: PersonVO = DozerMapper.parseObject(repository.save(entity), PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        personVO.add(withSelfRel)
+        return personVO
+    }
+
+    @Transactional
+    fun disablePerson(id: Long): PersonVO {
+        logger.info("Desabilitando uma pessoa com ID $id!")
+        repository.disablePerson(id)
+
+        val person =  repository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Não há registro para esse ID!")}
+        val personVO: PersonVO = DozerMapper.parseObject(person, PersonVO::class.java)
         val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
         personVO.add(withSelfRel)
         return personVO

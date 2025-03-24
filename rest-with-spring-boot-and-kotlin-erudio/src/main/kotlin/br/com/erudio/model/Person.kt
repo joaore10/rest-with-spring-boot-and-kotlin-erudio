@@ -20,5 +20,8 @@ data class Person (
     var address: String = "",
 
     @Column(nullable = false)
-    var genero: String = ""
+    var genero: String = "",
+
+    @Column(nullable = false)
+    var enabled: Boolean = true
 )
