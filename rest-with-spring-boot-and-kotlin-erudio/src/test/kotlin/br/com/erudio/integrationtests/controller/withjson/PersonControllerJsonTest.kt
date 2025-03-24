@@ -94,7 +94,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertNotNull(item.genero)
 
         assertEquals("Richard",item.firstName)
-        assertEquals("Stallman",item.lastName)
+        assertEquals("StallmanT",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
         assertEquals(true,item.enabled)
@@ -103,7 +103,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
     @Test
     @Order(2)
     fun testUpdate(){
-        person.lastName = "Matthew Stallman"
+        person.lastName = "Matthew StallmanT"
 
         val content = given()
             .spec(specification)
@@ -128,7 +128,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
 
         assertEquals(person.id, item.id)
         assertEquals("Richard",item.firstName)
-        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("Matthew StallmanT",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
         assertEquals(true,item.enabled)
@@ -161,7 +161,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
 
         assertEquals(person.id, item.id)
         assertEquals("Richard",item.firstName)
-        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("Matthew StallmanT",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
         assertEquals(false,item.enabled)
@@ -194,7 +194,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
 
         assertEquals(person.id, item.id)
         assertEquals("Richard",item.firstName)
-        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("Matthew StallmanT",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
         assertEquals(false,item.enabled)
@@ -282,7 +282,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
 
     private fun mockPerson() {
         person.firstName = "Richard"
-        person.lastName = "Stallman"
+        person.lastName = "StallmanT"
         person.address = "New York City, New York - USA"
         person.genero = "Macho"
         person.enabled = true
