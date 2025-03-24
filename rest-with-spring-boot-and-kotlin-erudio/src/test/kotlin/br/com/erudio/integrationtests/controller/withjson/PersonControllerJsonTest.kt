@@ -97,6 +97,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertEquals("Stallman",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
+        assertEquals(true,item.enabled)
     }
 
     @Test
@@ -130,10 +131,44 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertEquals("Matthew Stallman",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
+        assertEquals(true,item.enabled)
     }
 
     @Test
     @Order(3)
+    fun testDisablePersonById(){
+
+        val content = given()
+            .spec(specification)
+            .contentType(ConfigTest.CONTENT_TYPE_JSON)
+            .pathParams("id", person.id)
+            .`when`()
+            .patch("{id}")
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString()
+
+        val item = objectMapper.readValue(content, PersonVO::class.java)
+        person = item
+
+        assertNotNull(item.id)
+        assertNotNull(item.firstName)
+        assertNotNull(item.lastName)
+        assertNotNull(item.address)
+        assertNotNull(item.genero)
+
+        assertEquals(person.id, item.id)
+        assertEquals("Richard",item.firstName)
+        assertEquals("Matthew Stallman",item.lastName)
+        assertEquals("New York City, New York - USA",item.address)
+        assertEquals("Macho",item.genero)
+        assertEquals(false,item.enabled)
+    }
+
+    @Test
+    @Order(4)
     fun testFindById(){
 
         val content = given()
@@ -162,10 +197,11 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertEquals("Matthew Stallman",item.lastName)
         assertEquals("New York City, New York - USA",item.address)
         assertEquals("Macho",item.genero)
+        assertEquals(false,item.enabled)
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     fun testDelete(){
         given()
             .spec(specification)
@@ -177,7 +213,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     fun testFindAll(){
 
         val content = given()
@@ -204,6 +240,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertEquals("Gachett",item1.lastName)
         assertEquals("Campinas 22",item1.address)
         assertEquals("Female",item1.genero)
+        assertEquals(true,item1.enabled)
 
         val item2 = people[5]
         assertNotNull(item2.id)
@@ -216,10 +253,11 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         assertEquals("Junior",item2.lastName)
         assertEquals("Brasil - Campinas",item2.address)
         assertEquals("Macho",item2.genero)
+        assertEquals(true,item2.enabled)
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     fun testFindAllWithoutToken(){
 
         val specificationWithoutToken: RequestSpecification = RequestSpecBuilder()
@@ -247,6 +285,7 @@ class PersonControllerJsonTest: AbstractIntegrationTest() {
         person.lastName = "Stallman"
         person.address = "New York City, New York - USA"
         person.genero = "Macho"
+        person.enabled = true
     }
 
 
