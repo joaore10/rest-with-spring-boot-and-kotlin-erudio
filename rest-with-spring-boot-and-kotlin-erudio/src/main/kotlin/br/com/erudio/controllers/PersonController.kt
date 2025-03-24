@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -124,6 +125,32 @@ class PersonController {
     ])
     fun update(@RequestBody PersonVO: PersonVO): PersonVO {
         return service.update(PersonVO)
+    }
+
+    @PatchMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
+    @Operation(summary = "Disable a People", description = "Disable a Peoples", tags = ["People"], responses = [
+        ApiResponse(description = "Success", responseCode = "200", content = [
+            Content(schema = Schema(implementation = PersonVO::class))
+        ]),
+        ApiResponse(description = "No Content", responseCode = "204", content = [
+            Content(schema = Schema(implementation = Unit::class))
+        ]),
+        ApiResponse(description = "Bad Request", responseCode = "400", content = [
+            Content(schema = Schema(implementation = Unit::class))
+        ]),
+        ApiResponse(description = "Unauthorized", responseCode = "401", content = [
+            Content(schema = Schema(implementation = Unit::class))
+        ]),
+        ApiResponse(description = "Not Found", responseCode = "404", content = [
+            Content(schema = Schema(implementation = Unit::class))
+        ]),
+        ApiResponse(description = "Internal Error", responseCode = "500", content = [
+            Content(schema = Schema(implementation = Unit::class))
+        ])
+    ])
+    fun disabledPersonById(@PathVariable(value = "id") id: Long
+    ): PersonVO {
+        return service.disablePerson(id)
     }
 
     @DeleteMapping(value=["/{id}"], produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YAML])
